@@ -12,7 +12,7 @@ func DeleteService(service *asset.Service) error {
 		fmt.Errorf("failed to delete service, err:%+v\n", result.Error)
 	}
 	if result.RowsAffected > 1 {
-		fmt.Errorf("delete service{%} more than 1", service.Name)
+		fmt.Errorf("delete service{%s} more than 1", service.Name)
 	}
 	if result.RowsAffected == 0 {
 		fmt.Errorf("service {%s} is not exist", service.Name)
