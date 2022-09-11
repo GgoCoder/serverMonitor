@@ -97,6 +97,7 @@ func InitServiceRoot() {
 	for _, s := range services {
 		serviceRoot.Services[s.Name] = &s
 	}
+	fmt.Printf("service root: %+v\n", serviceRoot)
 }
 
 func getServiceRoot() *ServiceRoot {

@@ -16,6 +16,7 @@ func ListService(c *gin.Context) {
 func AddService(c *gin.Context) {
 	service := &asset.Service{}
 	service.CreateTime = time.Now()
+	service.LastCheckTime = time.Now()
 	err := c.BindJSON(service)
 	if err != nil {
 		ResponseWithError(c, "error body")

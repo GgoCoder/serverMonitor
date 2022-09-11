@@ -6,6 +6,7 @@ import (
 )
 
 func Start() {
+	// global.MysqlUrl = "mysql"
 	global.MysqlUrl = "192.168.0.100"
 	global.DB = database.Init()
 	InitServiceRoot()

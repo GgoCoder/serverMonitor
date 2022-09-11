@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"serverMonitor/asset"
 	"serverMonitor/global"
 
 	"gorm.io/driver/mysql"
@@ -28,4 +29,11 @@ func PingDb() error {
 		return fmt.Errorf("can not to connect to mysql")
 	}
 	return nil
+}
+
+func MigratorTable(tableName string) {
+	switch tableName {
+	case "service":
+		global.DB.AutoMigrate(&asset.Service{})
+	}
 }
