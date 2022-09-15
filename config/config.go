@@ -7,6 +7,7 @@ type DbConfig struct{
 	Port uint16 `json:"port" yaml:"port"`
 	DbName string `json:"dbName" yaml:"dbName"`
 	User  string `json:"user" yaml:"user"`
+	Passwd string `json:"passwd" yaml:"passwd"`
 }
 
 type LogConfig struct{

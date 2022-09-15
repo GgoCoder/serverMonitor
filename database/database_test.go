@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"serverMonitor/asset"
-	"serverMonitor/global"
 	"testing"
 	"time"
 
@@ -11,13 +10,10 @@ import (
 )
 
 func TestPing(t *testing.T) {
-	global.MysqlUrl = "127.0.0.1"
 	assert.Equal(t, nil, PingDb())
 }
 
 func TestAdd(t *testing.T) {
-	global.MysqlUrl = "127.0.0.1"
-	global.DB = Init()
 	MigratorTable("service")
 	serviceMonitor := &asset.Service{}
 	serviceMonitor.Name = "监控"

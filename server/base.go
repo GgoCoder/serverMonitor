@@ -13,6 +13,6 @@ func ResponseWithJson(c *gin.Context, pyload interface{}){
 	c.JSON(http.StatusOK, pyload)
 }
 
-func ResponseWithError(c *gin.Context, msg string){
-	ResponseWithJson(c, map[string]string{"message": msg})
+func ResponseWithError(c *gin.Context, msg interface{}){
+	ResponseWithJson(c, map[string]interface{}{"message": msg})
 }

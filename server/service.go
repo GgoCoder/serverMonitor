@@ -22,7 +22,11 @@ func AddService(c *gin.Context) {
 		ResponseWithError(c, "error body")
 		return
 	}
-	monitor.AddService(service)
+	err = monitor.AddService(service)
+	if err != nil{
+		ResponseWithError(c, err)
+		return
+	}
 	ResponseWithJson(c, "post service successfully")
 }
 
@@ -33,7 +37,12 @@ func UpdateService(c *gin.Context) {
 		ResponseWithError(c, "error body")
 		return
 	}
-	monitor.UpdateService(service)
+	err = monitor.UpdateService(service)	
+	if err != nil{
+		ResponseWithError(c, err)
+		return
+	}
+
 	ResponseWithJson(c, "update service successfully")
 }
 
@@ -44,6 +53,10 @@ func DeleteService(c *gin.Context) {
 		ResponseWithError(c, "error body")
 		return
 	}
-	monitor.DeleteService(service)
+	err = monitor.DeleteService(service)
+	if err != nil{
+		ResponseWithError(c, err)
+		return
+	}
 	ResponseWithJson(c, "delete service successfully")
 }

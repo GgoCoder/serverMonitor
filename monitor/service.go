@@ -52,6 +52,9 @@ func isServiceReady(service *asset.Service) bool {
 func AddService(service *asset.Service) error {
 	serviceRoot.Lock()
 	defer serviceRoot.Unlock()
+	if _, ok := serviceRoot.Services[service.Name]; ok{
+		return fmt.Errorf("service :%+v is existed\n", service.Name)
+	}
 	serviceRoot.Services[service.Name] = service
 	err := database.InsertService(service)
 	return err
