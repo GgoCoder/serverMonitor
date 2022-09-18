@@ -1,0 +1,11 @@
+db:
+  database: "mysql"
+  url: "192.168.0.100"
+  port: 3306
+  dbName: "web_service"
+  user: "grafana"
+  passwd: "grafana"
+
+log:
+  fileName: "/root/goWorkspace/serverMonitor/running.log"
+  level: "info"
