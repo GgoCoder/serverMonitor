@@ -16,6 +16,11 @@ type LogConfig struct {
 }
 
 type ConfigYaml struct {
-	Db  DbConfig  `json:"db" yaml:"db"`
-	Log LogConfig `json:"log" yaml:"log"`
+	Db   DbConfig   `json:"db" yaml:"db"`
+	Log  LogConfig  `json:"log" yaml:"log"`
+	Etcd EtcdConfig `json:"etcd" yaml:"etcd"`
+}
+
+type EtcdConfig struct {
+	EndPoints []string `json:"endPoints" yaml:"endPoints"`
 }

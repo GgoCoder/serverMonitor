@@ -16,7 +16,9 @@ service RecordLog{
 //生成的接口代码作为客户端与服务端的约定，服务端必须实现定义的所有接口方法，客户端直接调用同名方法向服务端发起请求。
 
 message Msg{
-    string Msg = 1;
+    string User = 1;
+	string Module = 2;
+    string Msg = 3;
 }
 
 message Reponse{

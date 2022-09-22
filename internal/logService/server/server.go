@@ -15,6 +15,7 @@ type Server struct {
 
 func (s *Server) RecordLogMsg(ctx context.Context, msg *pb.Msg) (*pb.Reponse, error) {
 	fmt.Println("receive msg from client")
+	//TODO入库
 	return &pb.Reponse{Result: 1}, nil
 }
 func StartLogRpc() {
@@ -26,6 +27,7 @@ func StartLogRpc() {
 	}
 
 	s := grpc.NewServer()
+	//注册到服务中心
 	pb.RegisterRecordLogServer(s, &Server{})
 	err = s.Serve(lis)
 	if err != nil {
