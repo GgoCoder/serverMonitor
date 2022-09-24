@@ -10,3 +10,5 @@ var Logger *zap.SugaredLogger
 var LogLevel = zap.NewAtomicLevel()
 
 const ConfigPath = "/root/goWorkspace/serverMonitor/config/serviceRegister/config.yaml"
+
+

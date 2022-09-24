@@ -1,10 +1,9 @@
-package serviceregister
+package register
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"serverMonitor/internal/serviceRegister/pkg/config"
 	"serverMonitor/pkg/etcd"
 	"serverMonitor/pkg/typed"
 	"time"
@@ -13,15 +12,14 @@ import (
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
-type HandleMicroService interface{}
 
-func Register(serviceName, addr string, port uint16) {
+func Register(serviceName, addr string, port uint16, conf *typed.ConfigYaml) {
 	newService := &typed.MicroService{
 		ServiceName: serviceName,
 		Addr:        addr,
 		Port:        port,
 	}
-	etcdClient := etcd.GetClient(config.ServiceRegisterConfig.Etcd.EndPoints, 5*time.Second)
+	etcdClient := etcd.GetClient(conf.Etcd.EndPoints, 5*time.Second)
 	defer etcdClient.Close()
 	data, err := json.Marshal(newService)
 	if err != nil {
@@ -35,8 +33,8 @@ func Register(serviceName, addr string, port uint16) {
 	fmt.Println("register successfully!")
 }
 
-func DeRegister(serviceName string) {
-	etcdClient := etcd.GetClient(config.ServiceRegisterConfig.Etcd.EndPoints, 5*time.Second)
+func DeRegister(serviceName string, conf *typed.ConfigYaml) {
+	etcdClient := etcd.GetClient(conf.Etcd.EndPoints, 5*time.Second)
 	defer etcdClient.Close()
 	_, err := etcdClient.Delete(context.Background(), serviceName)
 	if err != nil {
@@ -46,9 +44,9 @@ func DeRegister(serviceName string) {
 }
 
 //考虑做成接口，每个服务都实现这个接口
-func DiscoverServices(serviceName string, service chan *typed.MicroService) {
+func DiscoverServices(serviceName string, service chan *typed.MicroService, conf *typed.ConfigYaml) {
 
-	etcdClient := etcd.GetClient(config.ServiceRegisterConfig.Etcd.EndPoints, 5*time.Second)
+	etcdClient := etcd.GetClient(conf.Etcd.EndPoints, 5*time.Second)
 	serviceChan := etcdClient.Watch(context.Background(), serviceName)
 	for {
 		select {

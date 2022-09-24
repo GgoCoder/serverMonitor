@@ -22,3 +22,7 @@ func Login(c *gin.Context) {
 	}
 	base.ResponseWithError(c, "user or passwd error, please try again")
 }
+
+func Regiter(c *gin.Context){
+
+}
