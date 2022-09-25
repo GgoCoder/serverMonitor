@@ -48,6 +48,9 @@ func reloadConfig() *typed.ConfigYaml {
 			FileName: viper.GetString("log.fileName"),
 			Level:    viper.GetString("log.level"),
 		},
+		Etcd: typed.EtcdConfig{
+			EndPoints: viper.GetStringSlice("etcd.endpoints"),
+		},
 	}
 	return config
 }

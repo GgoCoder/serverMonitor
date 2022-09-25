@@ -2,18 +2,16 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"serverMonitor/internal/webService/internal/controller/serviceController"
 	"serverMonitor/internal/webService/internal/controller/loginController"
+	"serverMonitor/internal/webService/internal/controller/serviceController"
 )
 
 func Start() {
 	r := gin.Default()
 	r.POST("/login", LoginController.Login)
-	r.POST("/regiter", LoginController.Regiter)
-	
+	r.POST("/register", LoginController.Regiter)
 
 	r.GET("/home", serviceController.ListService)
-
 
 	r.GET("/service", serviceController.ListService)
 	r.POST("/service", serviceController.AddService)
