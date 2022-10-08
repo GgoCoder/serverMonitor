@@ -33,7 +33,10 @@ userGrpc:
 	protoc  --go-grpc_out=./internal/userService/proto/ ./internal/userService/proto/user.proto
 	@echo "genetated user grpc proto successfully!\n"
 
-
+.PHONY:
+prepare:
+	echo  "10.182.34.112 etcd.test.com" >> /etc/hosts
+	echo  "192.168.0.104 etcd.test.com" >> /etc/hosts
 
 
 .PHONY:
