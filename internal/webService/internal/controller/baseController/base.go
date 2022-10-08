@@ -9,9 +9,9 @@ import (
 type BaseGin gin.Engine
 
 func ResponseWithJson(c *gin.Context, pyload interface{}) {
-	c.JSON(http.StatusOK, pyload)
+	c.JSON(http.StatusOK, map[string]interface{}{"code": http.StatusOK, "result": pyload})
 }
 
 func ResponseWithError(c *gin.Context, msg interface{}) {
-	ResponseWithJson(c, map[string]interface{}{"message": msg})
+	c.JSON(http.StatusOK, map[string]interface{}{"code": http.StatusServiceUnavailable, "message": msg})
 }

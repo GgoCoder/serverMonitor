@@ -10,6 +10,6 @@ import (
 func Start() {
 	microservice.StartHandleService()
 	database.DbInit()
-	router.Start()
 	monitor.Start()
+	router.Start()
 }
