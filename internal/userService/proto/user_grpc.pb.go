@@ -22,8 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	UserLogin(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error)
-	UserRegiter(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error)
+	UserManager(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error)
 }
 
 type userClient struct {
@@ -34,18 +33,9 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) UserLogin(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error) {
+func (c *userClient) UserManager(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error) {
 	out := new(Reponse)
-	err := c.cc.Invoke(ctx, "/proto.User/UserLogin", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userClient) UserRegiter(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Reponse, error) {
-	out := new(Reponse)
-	err := c.cc.Invoke(ctx, "/proto.User/UserRegiter", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.User/UserManager", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,8 +46,7 @@ func (c *userClient) UserRegiter(ctx context.Context, in *UserInfo, opts ...grpc
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	UserLogin(context.Context, *UserInfo) (*Reponse, error)
-	UserRegiter(context.Context, *UserInfo) (*Reponse, error)
+	UserManager(context.Context, *UserInfo) (*Reponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -65,11 +54,8 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) UserLogin(context.Context, *UserInfo) (*Reponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
-}
-func (UnimplementedUserServer) UserRegiter(context.Context, *UserInfo) (*Reponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserRegiter not implemented")
+func (UnimplementedUserServer) UserManager(context.Context, *UserInfo) (*Reponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserManager not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -84,38 +70,20 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserManager_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).UserLogin(ctx, in)
+		return srv.(UserServer).UserManager(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.User/UserLogin",
+		FullMethod: "/proto.User/UserManager",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UserLogin(ctx, req.(*UserInfo))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _User_UserRegiter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserInfo)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).UserRegiter(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.User/UserRegiter",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UserRegiter(ctx, req.(*UserInfo))
+		return srv.(UserServer).UserManager(ctx, req.(*UserInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -128,12 +96,8 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "UserLogin",
-			Handler:    _User_UserLogin_Handler,
-		},
-		{
-			MethodName: "UserRegiter",
-			Handler:    _User_UserRegiter_Handler,
+			MethodName: "UserManager",
+			Handler:    _User_UserManager_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

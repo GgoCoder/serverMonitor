@@ -8,9 +8,11 @@ import (
 	pb "serverMonitor/internal/logService/proto"
 	"serverMonitor/pkg/config"
 	"serverMonitor/pkg/constant"
+	"serverMonitor/pkg/mongo"
 	"serverMonitor/pkg/serviceRegister/pkg/manager"
 	"serverMonitor/pkg/serviceRegister/pkg/register"
 	"serverMonitor/pkg/typed"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -19,10 +21,26 @@ type Server struct {
 	pb.UnimplementedRecordLogServer
 }
 
+type HandleLogInfo struct{
+	Time time.Time
+	User  string
+	Module string
+	Msg   string
+}
+
 func (s *Server) RecordLogMsg(ctx context.Context, msg *pb.Msg) (*pb.Reponse, error) {
 	fmt.Printf("receive msg from client, msg info: %+v\n", msg)
 	//TODO入库
-	return &pb.Reponse{Result: 1}, nil
+	newMsg := HandleLogInfo{
+		Time: time.Now(),
+		User: msg.GetUser(),
+		Module: msg.GetModule(),
+		Msg: msg.GetMsg(),
+	}
+	c := mongo.NewMgo(constant.MongoHandleLogConnnection)
+	err := c.InsertOne(newMsg)
+
+	return &pb.Reponse{Result: 1}, err
 }
 
 var serviceRoot *manager.MicroServiceRoot = nil
@@ -41,11 +59,10 @@ func StartLogRpc() {
 
 	s := grpc.NewServer()
 	isConfigUpdated := make(chan int)
-	conf.LogSerrviceConfig, conf.Logger = config.ConfigInit(conf.ConfigPath, conf.LogLevel, isConfigUpdated)
-	fmt.Printf("config :%+v\n", conf.LogSerrviceConfig)
-	register.Register(logGrpc, conf.LogSerrviceConfig)
-
-	//注册到服务中心
+	conf.LogServiceConfig, conf.Logger = config.ConfigInit(conf.ConfigPath, conf.LogLevel, isConfigUpdated)
+	fmt.Printf("config :%+v\n", conf.LogServiceConfig)
+	register.Register(logGrpc, conf.LogServiceConfig)
+	//注册到服务中心, 感觉没有必要
 	pb.RegisterRecordLogServer(s, &Server{})
 	err = s.Serve(lis)
 	if err != nil {
@@ -58,7 +75,7 @@ func StartLogRpc() {
 			continue
 		}
 		go func() {
-			register.DiscoverServices(svc, outPut, conf.LogSerrviceConfig)
+			register.DiscoverServices(svc, outPut, conf.LogServiceConfig)
 		}()
 
 	}
@@ -70,7 +87,7 @@ func GetLogServiceRoot() *manager.MicroServiceRoot {
 	}
 	logGrpc := &typed.MicroService{}
 	logGrpc.ServiceName = constant.LogGrpcName
-	logGrpc.Endpoints = append(logGrpc.Endpoints, typed.Endpoint{IP: "192.168.0.100", Port: 20008})
+	logGrpc.Endpoints = append(logGrpc.Endpoints, typed.Endpoint{IP: "127.0.0.1", Port: 20008})
 	serviceRoot = manager.InitServiceRoot(logGrpc)
 	return serviceRoot
 }

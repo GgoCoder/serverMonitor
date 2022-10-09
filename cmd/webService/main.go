@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	_ "net/http/pprof"
 	conf "serverMonitor/internal/webService/pkg/config"
@@ -19,7 +18,7 @@ func main() {
 		}
 	}()
 	go func() {
-		fmt.Printf("start to http pprof\n")
+		conf.Logger.Infof("start to http pprof\n")
 		http.ListenAndServe("0.0.0.0:8081", nil)
 	}()
 	start.Start()
