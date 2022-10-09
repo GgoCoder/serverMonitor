@@ -36,7 +36,7 @@ userGrpc:
 .PHONY:
 prepare:
 	echo  "10.182.34.112 etcd.test.com" >> /etc/hosts
-	echo  "192.168.0.104 etcd.test.com" >> /etc/hosts
+	echo  "192.168.0.100 etcd.test.com" >> /etc/hosts
 
 
 .PHONY:
