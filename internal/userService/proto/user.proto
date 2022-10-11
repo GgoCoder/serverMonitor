@@ -10,8 +10,7 @@ option go_package="./;proto";
 
 //定义一个prpcd服务，接收msg返回response
 service User{
-    rpc UserLogin(UserInfo) returns (Reponse){}
-    rpc UserRegiter(UserInfo) returns (Reponse){}
+    rpc UserManager(UserInfo) returns (Reponse){}
 }
 
 
@@ -20,6 +19,7 @@ message UserInfo{
     string Name = 2;
 	string Passwd = 3;
     string Email = 4;
+	string Type = 5;
 }
 
 message Reponse{

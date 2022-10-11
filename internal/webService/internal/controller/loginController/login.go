@@ -24,8 +24,7 @@ func Login(c *gin.Context) {
 		fmt.Println(err)
 		base.ResponseWithError(c, "error body")
 	}
-	fmt.Println(loginInfo["userName"] == "123456")
-	fmt.Println(loginInfo["passWord"] == "123456")
+
 	if loginInfo["userName"] == "123456" && loginInfo["passWord"] == "123456" {
 		endpoints := microservice.GetWebServiceServiceRoot().GetServiceEndpointsByName(constant.LogGrpcName)
 		conn, err := grpc.Dial(util.GenerateGrpcClientStr(endpoints), grpc.WithInsecure())

@@ -37,6 +37,10 @@ userGrpc:
 prepare:
 	echo  "10.182.34.112 etcd.test.com" >> /etc/hosts
 	echo  "192.168.0.100 etcd.test.com" >> /etc/hosts
+	echo  "192.168.0.100 mysql.test.com">> /etc/hosts
+	echo  "10.182.34.112 mysql.test.com">> /etc/hosts
+	echo  "10.182.34.112 mysql.test.com">> /etc/hosts
+	echo  "192.168.0.100 mongo.test.com">> /etc/hosts
 
 
 .PHONY:
