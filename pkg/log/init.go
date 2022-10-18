@@ -18,7 +18,20 @@ func InitLogger(fileName string, level zapcore.LevelEnabler) *zap.SugaredLogger 
 }
 
 func getEncoder() zapcore.Encoder {
-	return zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+	logConf := zapcore.EncoderConfig{
+		TimeKey:        "time",
+		LevelKey:       "level",
+		NameKey:        "name",
+		CallerKey:      "caller",
+		FunctionKey:    "func",
+		MessageKey:     "msg",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeTime:     zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05.000"),
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeCaller:   zapcore.FullCallerEncoder,}
+	return zapcore.NewJSONEncoder(logConf)
 }
 
 func getLogWriter(fileName string) zapcore.WriteSyncer {
